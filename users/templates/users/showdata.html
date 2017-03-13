@@ -1,0 +1,26 @@
+{% if all_users %}
+
+    <h1>Here is the list of users.</h1>
+<ul>
+    {% for user in all_users %}
+
+    <li> Firstname:{{ user.firstname }} 
+	Surname:{{ user.surname  }} 
+	Email:{{ user.email }}
+	Telephone_number:{{ user.telephone_number }}</li>
+	Company_name:{{ user.company_name }}
+	Company_street_address:{{ user.company_street_address }}
+	City:{{ user.city }}
+	Postcode:{{ user.postcode }}
+	Company_number:{{ user.company_number }}
+	Busineses_sector:{{ user.business_sector }}
+	Borrowing:{{ user.borrowing }}
+	Days:{{ user.days }}
+	Reason_for_loan:{{ user.reason_for_loan }}
+	
+    {% endfor %}
+</ul>
+{#  In case  no user exists.  #}
+{% else %}
+<h3> No users found.</h3>
+{% endif %}
