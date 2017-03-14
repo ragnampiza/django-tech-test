@@ -30,7 +30,9 @@ class UserForm(forms.Form):
     business_sector = forms.ChoiceField(choices = filter_choices)
     days = forms.CharField(max_length=5)
     reason_for_loan = forms.CharField(max_length=2000,widget=forms.Textarea)
-    borrowing = forms.IntegerField(validators=[MinValueValidator(10000),MaxValueValidator(100000)])
+    #borrowing = forms.IntegerField(validators=[MinValueValidator(10000),MaxValueValidator(100000)])
+
+# borrowing limit validation
 
 class UserForm(forms.ModelForm):
     class Meta:
@@ -39,35 +41,62 @@ class UserForm(forms.ModelForm):
 
     def clean_borrowing(self):
        borrowing = self.cleaned_data['borrowing']
-       if not 10000 < borrowing < 100000:
-           raise forms.ValidationError("Your error message here")
+       if not 10000 <= borrowing <= 100000:
+           raise forms.ValidationError("Please enter a borrowing value between 10000 and 100000")
        return borrowing
+
+# company number length validation
     
-    #'borrowing = forms.CharField(max_length=9)
-    #borrowing = forms.IntegerField(validators=[MinValueValidator(10000),MaxValueValidator(100000)])
+class UserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = '__all__'
 
-##    def clean_borrowing(self):
-##        borrowing = self.cleaned_data['borrowing']
-##        if not 10000 < borrowing < 100000:
-##            raise forms.ValidationError("Please enter a borrowing value between " \
-##                                    "10000 and 100000")
-##
-##        return borrowing
-##
-##
-##    borrowing = cleaned_data['borrowing']
-##    if not 10000 < borrowing < 100000:
-##        raise forms.ValidationError("Please enter a borrowing value between 10000 and 100000")
-##    else:
-##        borrowing = cleaned_data['borrowing']
-## 
+    def clean_company_number(self):
+       company_number = self.cleaned_data['company_number']
+       if not 6 <= len(company_number) <= 8:
+           raise forms.ValidationError("Company number must be 8 digits long")
+       return company_number
+
+# email address validation using @ sign
+
+class UserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = '__all__'
+
+    def clean_email(self):
+       email = self.cleaned_data['email']
+       if '@' not in email:
+           raise forms.ValidationError("Must be a valid email address")
+       return email
+
+# telephone number length confirmation
+
+class UserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = '__all__'
+
+    def clean_telephone_number(self):
+       telephone_number = self.cleaned_data['telephone_number']
+       if not 6 <= len(telephone_number) <= 14:
+           raise forms.ValidationError("Must be a valid telephone number")
+       return telephone_number
+
+# postcode length confirmation    
+
+class UserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = '__all__'
+
+    def clean_postcode(self):
+       postcode = self.cleaned_data['postcode']
+       if not 6 <= len(postcode) <= 8:
+           raise forms.ValidationError("Must be a valid postcode")
+       return postcode
 
 
-
-##    business_sector = forms.CharField(  
-##        ('retail', 'retail'),
-##	('professional_services', 'professional_services'),
-##	('food_&_drink', 'food_&_drink'),
-##	('entertainment', 'entertainment'))
-##
+    
 
